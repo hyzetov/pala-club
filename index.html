@@ -121,7 +121,7 @@
   .intro{position:relative; height:calc(100svh - var(--nav-h,0px)); background:#2d2b30;}
   /* the film fills the screen below the sticky nav (JS measures the nav into --nav-h) */
   .intro-sticky{position:sticky; top:calc(env(safe-area-inset-top,0px) + var(--nav-h,0px)); height:calc(100vh - var(--nav-h,0px)); height:calc(100svh - var(--nav-h,0px)); overflow:hidden; background:#2d2b30;}
-  .intro-poster{position:absolute; inset:0; background:#2d2b30 url("intro/poster.jpg") center/cover no-repeat;}
+  .intro-poster{position:absolute; inset:0; background:#2d2b30 url("poster.jpg") center/cover no-repeat;}
   .intro-canvas{position:absolute; inset:0; width:100%; height:100%; display:block; will-change:transform;}
   .intro-shade{position:absolute; inset:0; pointer-events:none;
     background:radial-gradient(ellipse 80% 70% at 50% 45%, rgba(18,17,20,0) 45%, rgba(18,17,20,.6) 100%);}
@@ -503,18 +503,18 @@
     </div>
     <div class="gallery-grid">
       <div class="gallery-item reveal" style="--d:0ms">
-        <video class="gallery-video" autoplay muted loop playsinline poster="photos/gallery-video-poster.jpg" aria-label="Игра на корте клуба">
+        <video class="gallery-video" autoplay muted loop playsinline poster="gallery-video-poster.jpg" aria-label="Игра на корте клуба">
           <source src="gallery-video.mp4" type="video/mp4">
         </video>
       </div>
       <div class="gallery-item reveal" style="--d:60ms">
-        <img src="photos/pink-shoes-overhead.jpg" alt="Игрок на корте, вид сверху" loading="lazy">
+        <img src="pink-shoes-overhead.jpg" alt="Игрок на корте, вид сверху" loading="lazy">
       </div>
       <div class="gallery-item reveal" style="--d:120ms">
-        <img src="photos/arm-ball-closeup.jpg" alt="Игрок клуба с ракеткой" loading="lazy">
+        <img src="arm-ball-closeup.jpg" alt="Игрок клуба с ракеткой" loading="lazy">
       </div>
       <div class="gallery-item gallery-more gallery-more-photo reveal" style="--d:180ms">
-        <img class="gallery-more-bg" src="photos/booking-balls.png" alt="" loading="lazy">
+        <img class="gallery-more-bg" src="booking-balls.png" alt="" loading="lazy">
         <div class="gallery-more-scrim"></div>
         <span class="eyebrow">Бронь</span>
         <strong>Хотите на корт?</strong>
@@ -546,7 +546,7 @@
     </div>
     <div class="card-grid">
       <div class="card reveal" style="--d:0ms">
-        <div class="card-photo"><img src="photos/equipment-shelf.jpg" alt="Инвентарь клуба: мячи и ракетки" loading="lazy"></div>
+        <div class="card-photo"><img src="equipment-shelf.jpg" alt="Инвентарь клуба: мячи и ракетки" loading="lazy"></div>
         <h3>Корты</h3>
         <p>3 профессиональных падел-корта со стеклянными стенами и покрытием для точного, предсказуемого отскока мяча.</p>
         <div class="price-list-label">Аренда корта</div>
@@ -557,7 +557,7 @@
         <p class="price-note">Ракетки и мячи включены в стоимость</p>
       </div>
       <div class="card reveal" style="--d:100ms">
-        <div class="card-photo"><img src="photos/player-black.jpg" alt="Тренировка в клубе" loading="lazy"></div>
+        <div class="card-photo"><img src="player-black.jpg" alt="Тренировка в клубе" loading="lazy"></div>
         <h3>Тренировки</h3>
         <p>Групповые и индивидуальные занятия для детей и взрослых — от первого касания мяча до игрового уровня.</p>
         <div class="price-list-label">Тренировка с тренером</div>
@@ -569,7 +569,7 @@
         </dl>
       </div>
       <div class="card reveal" style="--d:200ms">
-        <div class="card-photo"><img src="photos/medals-hanging.jpg" alt="Медали турниров клуба" loading="lazy"></div>
+        <div class="card-photo"><img src="medals-hanging.jpg" alt="Медали турниров клуба" loading="lazy"></div>
         <h3>Турниры и события</h3>
         <p>Любительские турниры, клубные вечера и матчи с приглашёнными командами из других городов.</p>
       </div>
@@ -585,7 +585,7 @@
     </div>
     <div class="rules-grid">
       <div class="rule-card reveal" style="--d:0ms">
-        <div class="rule-photo"><img src="photos/rule-serve.jpg" alt="Подача в падел: удар снизу с отскоком мяча по диагонали" loading="lazy"></div>
+        <div class="rule-photo"><img src="rule-serve.jpg" alt="Подача в падел: удар снизу с отскоком мяча по диагонали" loading="lazy"></div>
         <div class="rule-body">
           <div class="rule-icon" aria-hidden="true">
             <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -602,7 +602,7 @@
         </div>
       </div>
       <div class="rule-card reveal" style="--d:100ms">
-        <div class="rule-photo"><img src="photos/rule-wall.jpg" alt="Мяч отскакивает от стеклянной стены корта для падел" loading="lazy"></div>
+        <div class="rule-photo"><img src="rule-wall.jpg" alt="Мяч отскакивает от стеклянной стены корта для падел" loading="lazy"></div>
         <div class="rule-body">
           <div class="rule-icon" aria-hidden="true">
             <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -618,7 +618,7 @@
         </div>
       </div>
       <div class="rule-card reveal" style="--d:200ms">
-        <div class="rule-photo"><img src="photos/rule-score.jpg" alt="Ракетка и мяч для падел на корте" loading="lazy"></div>
+        <div class="rule-photo"><img src="rule-score.jpg" alt="Ракетка и мяч для падел на корте" loading="lazy"></div>
         <div class="rule-body">
           <div class="rule-icon" aria-hidden="true">
             <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -664,7 +664,7 @@
       </div>
     </div>
     <div class="about-photo reveal" style="--d:150ms">
-      <img src="photos/medal-polo.jpg" alt="Медаль «Пала Клаб» на клубной форме" loading="lazy">
+      <img src="medal-polo.jpg" alt="Медаль «Пала Клаб» на клубной форме" loading="lazy">
     </div>
   </div>
 </section>
@@ -679,7 +679,7 @@
 </div>
 
 <div class="event-banner reveal">
-  <img src="photos/serving-branded-wall.jpg" alt="Фирменная стена клуба с кубками и логотипом Pala Club" loading="lazy">
+  <img src="serving-branded-wall.jpg" alt="Фирменная стена клуба с кубками и логотипом Pala Club" loading="lazy">
   <div class="event-caption">
     <div class="eyebrow">Своя атмосфера</div>
     <strong>Клуб с характером — от формы до стен корта</strong>
@@ -689,7 +689,7 @@
 <div class="booking">
   <div class="wrap booking-inner">
     <div class="booking-copy">
-      <div class="booking-photo"><img src="photos/booking-racket-balls.png" alt="Ракетка для падела в сумке с мячами"></div>
+      <div class="booking-photo"><img src="booking-racket-balls.png" alt="Ракетка для падела в сумке с мячами"></div>
       <div>
         <h2>Мы в соцсетях</h2>
       </div>
@@ -741,10 +741,10 @@
     </div>
     <div class="route-grid">
       <div class="route-card route-card-photo reveal" style="--d:0ms">
-        <img src="photos/route-photo.jpg" alt="Клуб находится в ТЦ «Шанхаймолл», ул. Ленина, 45">
+        <img src="route-photo.jpg" alt="Клуб находится в ТЦ «Шанхаймолл», ул. Ленина, 45">
       </div>
       <div class="route-card route-card-map reveal" style="--d:100ms">
-        <img src="photos/route-map.jpg" alt="Схема проезда: вход в клуб со стороны ТЦ «Шанхаймолл»">
+        <img src="route-map.jpg" alt="Схема проезда: вход в клуб со стороны ТЦ «Шанхаймолл»">
       </div>
     </div>
     <div class="route-cta reveal" style="--d:180ms">
@@ -957,7 +957,7 @@
     var DURATION = 4500, HOLD = 1400;        // film length; pause on the title before it starts
     var p = 0, playing = false, started = false, last = 0, loadedCount = 0, t0 = performance.now();
 
-    function src(i){ return 'intro/f' + (i < 10 ? '0' + i : i) + '.webp'; }
+    function src(i){ return 'f' + (i < 10 ? '0' + i : i) + '.webp'; }
     function load(i){
       var img = new Image();
       img.decoding = 'async';
