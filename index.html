@@ -1,0 +1,1079 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Pala Club</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  /* ============ DESIGN PLAN ============
+     Structure/typography kept from the TWOTWO-inspired pass (two-radius system:
+     999px pills / 16px cards; hairline borders instead of shadows; single
+     neutral grotesk, size/color for hierarchy), but recoloured away from the
+     bright monochrome+neon-lime scheme into soft pastel tennis tones, grounded
+     in the club's own real identity (forest green + white/red checkerboard,
+     seen on its medals and court wall): pastel sage/mint surfaces, muted forest
+     green ink, and a soft buttery chartreuse accent instead of voltage lime.
+     Layout: sticky nav → hero (chartreuse wordmark + real photo card) → mono
+     stat strip → gallery → about → services → numbers → event photo → contrast
+     booking band → location → forest-green footer band.
+     Color: --bg (ivory), --surface, --surface-2 (pale mint), --fg (dark forest
+             green ink), --fg-muted, --accent (pastel chartreuse, CTAs/headline only)
+     Type: --font-display / --font-body (Inter, 400 only) / --font-mono (IBM Plex Mono, stats/labels)
+  ============================================= */
+  :root{
+    --bg:#FBF7EE;
+    --surface:#FFFFFF;
+    --surface-2:#EAF1E3;
+    --fg:#26382D;
+    --fg-muted:#5E7166;
+    --line: rgba(38,56,45,.14);
+    --accent:#D9E894;
+    --accent-fg:#26382D;
+    --radius-card:16px;
+    --radius-pill:999px;
+    --font-display:'Inter', ui-sans-serif, system-ui, sans-serif;
+    --font-body:'Inter', ui-sans-serif, system-ui, sans-serif;
+    --font-mono:'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#13211A; --surface:#1B2C23; --surface-2:#203528;
+      --fg:#F1EEE1; --fg-muted:#AEC0B3; --line: rgba(241,238,225,.15);
+      --accent:#D9E894; --accent-fg:#13211A; color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#13211A; --surface:#1B2C23; --surface-2:#203528;
+    --fg:#F1EEE1; --fg-muted:#AEC0B3; --line: rgba(241,238,225,.15);
+    --accent:#D9E894; --accent-fg:#13211A; color-scheme: dark;
+  }
+
+  *{box-sizing:border-box;}
+  body{background:var(--bg); color:var(--fg); font-family:var(--font-body); font-weight:400; line-height:1.5;}
+  h1,h2,h3{font-family:var(--font-display); font-weight:400; letter-spacing:-.02em; text-wrap:balance; margin:0;}
+  p{margin:0;}
+  a{color:inherit;}
+  img{max-width:100%;}
+  .wrap{max-width:1280px; margin:0 auto; padding-inline:20px;}
+  section{padding-block:64px;}
+  .eyebrow{font-family:var(--font-mono); font-size:13px; letter-spacing:.08em; text-transform:uppercase; color:var(--fg-muted);}
+  .mono{font-family:var(--font-mono); font-variant-numeric:tabular-nums;}
+  [hidden]{display:none !important;}
+  ::selection{background:var(--accent); color:var(--accent-fg);}
+  :focus-visible{outline:2px solid var(--accent); outline-offset:3px;}
+  @media (prefers-reduced-motion: no-preference){ html{scroll-behavior:smooth;} }
+
+  /* ---------- Scroll reveal ---------- */
+  .reveal{opacity:0; transform:translateY(22px); transition:opacity .7s cubic-bezier(.2,.7,.2,1), transform .7s cubic-bezier(.2,.7,.2,1); transition-delay:var(--d,0ms);}
+  .reveal.is-visible{opacity:1; transform:translateY(0);}
+  @media (prefers-reduced-motion: reduce){
+    .reveal{opacity:1; transform:none; transition:none;}
+  }
+
+  /* ---------- Nav ---------- */
+  .nav{
+    position:sticky; top:env(safe-area-inset-top,0px); z-index:20;
+    background:color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-row{display:flex; align-items:center; justify-content:space-between; gap:16px; padding-block:24px;}
+  .logo{display:flex; align-items:baseline; gap:8px; font-family:var(--font-display); font-weight:400; font-size:18px; letter-spacing:-.02em; white-space:nowrap;}
+  .logo small{font-family:var(--font-mono); font-weight:400; font-size:11px; color:var(--fg-muted); letter-spacing:.06em; text-transform:uppercase;}
+  .nav-book-wrap{position:relative;}
+  .nav-phone-popover{
+    position:absolute; top:calc(100% + 10px); right:0; z-index:20;
+    background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-card);
+    padding:18px; display:flex; flex-direction:column; align-items:center; gap:12px;
+    box-shadow:0 16px 36px rgba(15,26,20,.16); min-width:230px;
+  }
+  .nav-phone-number{font-family:var(--font-mono); font-size:18px; color:var(--fg); letter-spacing:.01em;}
+  .nav-links{display:flex; gap:28px; list-style:none; margin:0; padding:0; font-size:13px; text-transform:uppercase; letter-spacing:.04em;}
+  .nav-links a{position:relative; text-decoration:none; color:var(--fg-muted); transition:color .15s;}
+  .nav-links a::after{
+    content:""; position:absolute; left:0; right:100%; bottom:-4px; height:1px;
+    background:var(--fg); transition:right .25s ease;
+  }
+  .nav-links a:hover{color:var(--fg);}
+  .nav-links a:hover::after{right:0;}
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    font-family:var(--font-body); font-weight:400; font-size:15px;
+    border-radius:var(--radius-pill); padding:14px 28px; text-decoration:none;
+    border:1px solid transparent; cursor:pointer; white-space:nowrap;
+    appearance:none; -webkit-appearance:none; margin:0;
+  }
+  .btn{transition:filter .2s ease, border-color .2s ease, background .2s ease, color .2s ease;}
+  .btn-primary{background:var(--accent); color:var(--accent-fg);}
+  .btn-primary:hover{filter:brightness(1.06);}
+  .btn-ghost{background:transparent; color:var(--fg); border-color:var(--line);}
+  .btn-ghost:hover{border-color:var(--fg-muted);}
+  .btn-ghost-inverse{background:transparent; color:var(--bg); border-color:color-mix(in srgb, var(--bg) 35%, transparent);}
+  .btn-ghost-inverse:hover{border-color:color-mix(in srgb, var(--bg) 70%, transparent);}
+  .btn-sm{padding:10px 20px; font-size:13px;}
+  @media (prefers-reduced-motion: reduce){ .btn{transition:filter .2s ease;} }
+  @media (max-width:720px){ .nav-links{display:none;} }
+
+  /* ---------- Intro: scroll-scrubbed film (racket turns → ball → hit → ball into the lens) ---------- */
+  .intro{position:relative; height:calc(100svh - var(--nav-h,0px)); background:#2d2b30;}
+  /* the film fills the screen below the sticky nav (JS measures the nav into --nav-h) */
+  .intro-sticky{position:sticky; top:calc(env(safe-area-inset-top,0px) + var(--nav-h,0px)); height:calc(100vh - var(--nav-h,0px)); height:calc(100svh - var(--nav-h,0px)); overflow:hidden; background:#2d2b30;}
+  .intro-poster{position:absolute; inset:0; background:#2d2b30 url("intro/poster.jpg") center/cover no-repeat;}
+  .intro-canvas{position:absolute; inset:0; width:100%; height:100%; display:block; will-change:transform;}
+  .intro-shade{position:absolute; inset:0; pointer-events:none;
+    background:radial-gradient(ellipse 80% 70% at 50% 45%, rgba(18,17,20,0) 45%, rgba(18,17,20,.6) 100%);}
+  .intro-start{
+    position:absolute; inset:0; z-index:1; color:#fff; text-align:center; pointer-events:none;
+    display:flex; flex-direction:column; align-items:center; justify-content:center; padding:96px 16px 120px;
+  }
+  .intro-title{
+    display:flex; justify-content:center; align-items:baseline; gap:clamp(170px,23vw,400px);
+    font-size:clamp(56px,9.6vw,164px); line-height:.92; letter-spacing:-.045em; font-weight:500;
+    color:var(--accent); text-shadow:0 4px 40px rgba(0,0,0,.35);
+  }
+  .intro-title > span{white-space:nowrap; position:relative;}
+  .intro-tag{
+    position:absolute; left:.08em; top:100%; margin-top:18px; white-space:nowrap; text-shadow:none;
+    font-family:var(--font-mono); font-size:13px; font-weight:400; letter-spacing:.16em;
+    text-transform:uppercase; color:rgba(255,255,255,.82);
+  }
+  @media (max-aspect-ratio:1/1){
+    .intro-start{justify-content:flex-start; padding:clamp(32px,6vh,72px) 16px 120px;}
+    .intro-title{flex-direction:column; align-items:center; gap:0; font-size:clamp(60px,min(22vw,11vh),132px);}
+    .intro-title > span{position:static;}
+    /* on phones the tagline locks up right under the wordmark, above the racket */
+    .intro-tag{position:static; display:block; margin-top:16px; text-align:center; text-shadow:0 1px 14px rgba(0,0,0,.55);}
+  }
+  .intro-skip{
+    position:absolute; right:16px; bottom:calc(18px + env(safe-area-inset-bottom,0px)); z-index:4;
+    padding:9px 16px; border-radius:var(--radius-pill); cursor:pointer;
+    background:rgba(20,20,22,.42); color:#fff; border:1px solid rgba(255,255,255,.28);
+    -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px);
+    font-family:var(--font-mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase;
+    transition:background .2s ease, border-color .2s ease;
+  }
+  .intro-skip:hover{background:rgba(20,20,22,.6); border-color:rgba(255,255,255,.55);}
+  .intro-end-cue{
+    position:absolute; left:50%; bottom:calc(22px + env(safe-area-inset-bottom,0px)); transform:translateX(-50%);
+    display:flex; flex-direction:column; align-items:center; gap:8px; pointer-events:none;
+    font-family:var(--font-mono); font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:var(--accent-fg); opacity:.6;
+  }
+  .intro-end-cue span{width:1px; height:30px; background:linear-gradient(currentColor, transparent); transform-origin:top;
+    animation:cue-draw 2s cubic-bezier(.6,0,.2,1) infinite;}
+  @keyframes cue-draw{ 0%{transform:scaleY(0); opacity:1;} 60%{transform:scaleY(1); opacity:1;} 100%{transform:scaleY(1); opacity:0;} }
+  @media (max-height:640px){ .intro-end-cue{display:none;} }
+  .intro-progress{position:absolute; left:0; right:0; bottom:0; height:2px; z-index:2; background:rgba(255,255,255,.08); opacity:0; transition:opacity .4s ease;}
+  .intro.is-playing .intro-progress{opacity:1;}
+  .intro-progress span{display:block; height:100%; width:100%; background:var(--accent); transform-origin:left; transform:scaleX(0);}
+  .intro-flash{position:absolute; inset:0; z-index:2; background:var(--accent); opacity:0; pointer-events:none;}
+  .intro-end{
+    position:absolute; inset:0; z-index:3; background:var(--accent); color:var(--accent-fg);
+    display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;
+    padding:96px 16px 64px; opacity:0; visibility:hidden;
+  }
+  .intro-end.is-live{visibility:visible;}
+  .intro-end-inner{display:flex; flex-direction:column; align-items:center; max-width:880px;}
+  .intro-end .eyebrow{color:var(--accent-fg); opacity:.7; letter-spacing:.16em;}
+  .intro-end h2{margin-top:18px; font-size:clamp(38px,6.4vw,88px); line-height:1; letter-spacing:-.035em;}
+  .intro-end p{margin-top:22px; max-width:50ch; font-size:17px; line-height:1.6; opacity:.82;}
+  .intro-end-cta{display:flex; flex-wrap:wrap; justify-content:center; gap:12px; margin-top:34px;}
+  .btn-ink{background:var(--accent-fg); color:var(--accent);}
+  .btn-ink:hover{filter:brightness(1.25);}
+  .btn-ghost-ink{background:transparent; color:var(--accent-fg); border-color:color-mix(in srgb, var(--accent-fg) 35%, transparent);}
+  .btn-ghost-ink:hover{border-color:var(--accent-fg);}
+  .intro-replay{
+    margin-top:22px; padding:6px 4px; background:none; border:0; cursor:pointer; color:var(--accent-fg); opacity:.7;
+    font-family:var(--font-mono); font-size:12px; letter-spacing:.1em; text-transform:uppercase;
+  }
+  .intro-replay:hover{opacity:1; text-decoration:underline; text-underline-offset:4px;}
+  /* Reduced motion: no scrubbing — a still, finished first screen with the booking call */
+  @media (prefers-reduced-motion: reduce){
+    .intro-start, .intro-skip, .intro-progress, .intro-replay{display:none;}
+    .intro-end{opacity:1; visibility:visible;}
+    .intro-end-cue span{animation:none;}
+  }
+
+  /* ---------- Hero entrance (plays once on load, finished before the page is read) ---------- */
+  .hero-letter{display:inline-block; opacity:0; transform:translateY(.4em); animation:letter-in .6s cubic-bezier(.2,.7,.2,1) forwards; animation-delay:var(--ld,0ms);}
+  @keyframes letter-in{ to{ opacity:1; transform:translateY(0);} }
+  .hero-fade{opacity:0; transform:translateY(14px); animation:fade-in .7s cubic-bezier(.2,.7,.2,1) forwards; animation-delay:var(--fd,0ms);}
+  @keyframes fade-in{ to{ opacity:1; transform:translateY(0);} }
+  @media (prefers-reduced-motion: reduce){
+    .hero-letter, .hero-fade{ animation:none; opacity:1; transform:none; }
+  }
+
+  /* ---------- Stat strip ---------- */
+  .stat-strip{background:var(--surface); border-bottom:1px solid var(--line);}
+  .stat-row{display:flex; flex-wrap:wrap; gap:36px; padding-block:26px;}
+  .stat{display:flex; flex-direction:column; gap:4px; min-width:0;}
+  .stat b{font-family:var(--font-mono); font-size:26px; font-weight:500;}
+  .stat span{font-size:12px; letter-spacing:.04em; text-transform:uppercase; color:var(--fg-muted);}
+
+  /* ---------- Section header ---------- */
+  .section-head{max-width:640px; margin-bottom:40px;}
+  .section-head h2{font-size:clamp(28px,4vw,38px);}
+  .section-head p{margin-top:16px; font-size:16px; color:var(--fg-muted); line-height:1.6;}
+
+  /* ---------- Photo gallery ---------- */
+  .gallery-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:16px;}
+  @media (max-width:520px){ .gallery-grid{grid-template-columns:1fr;} }
+  .gallery-item video{width:100%; height:100%; object-fit:cover; display:block;}
+  .gallery-item{
+    display:block; border-radius:var(--radius-card); overflow:hidden; position:relative;
+    aspect-ratio:3/4; border:1px solid var(--line); background:var(--surface-2);
+  }
+  .gallery-item img{width:100%; height:100%; object-fit:cover; display:block; transition:transform .4s ease;}
+  .gallery-item:hover img{transform:scale(1.05);}
+  .gallery-more{
+    display:flex; flex-direction:column; align-items:flex-start; gap:4px;
+    padding:20px; background:var(--surface-2); transition:border-color .2s ease;
+    border:1px solid transparent;
+  }
+  .gallery-more:hover{border-color:var(--fg-muted);}
+  .gallery-more strong{font-family:var(--font-display); font-weight:400; font-size:19px; color:var(--fg); line-height:1.2; margin-top:2px;}
+  .gallery-more span{font-size:13px; color:var(--fg-muted);}
+  .gallery-more-link{font-size:13px; color:var(--fg); text-decoration:underline; text-decoration-color:var(--line); text-underline-offset:3px; margin-top:4px;}
+  .gallery-more-photo{background:var(--surface-2); border-color:transparent;}
+  .gallery-more-bg{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:0;}
+  .gallery-more-scrim{
+    position:absolute; inset:0; z-index:0;
+    background:linear-gradient(180deg, rgba(15,26,20,.18) 0%, rgba(15,26,20,.78) 100%);
+  }
+  .gallery-more-photo .eyebrow, .gallery-more-photo strong, .gallery-more-photo span, .gallery-more-photo .gallery-more-link{position:relative; z-index:1;}
+  .gallery-more-photo .eyebrow{color:rgba(255,255,255,.8);}
+  .gallery-more-photo strong{color:#fff;}
+  .gallery-more-photo span{color:rgba(255,255,255,.85);}
+  .gallery-more-photo .gallery-more-link{color:#fff; text-decoration-color:rgba(255,255,255,.5);}
+  .gallery-more-photo .gallery-more-link:hover{text-decoration-color:#fff;}
+  .gallery-more-photo:hover{border-color:transparent;}
+  .gallery-more-actions{
+    position:relative; z-index:1; display:flex; flex-wrap:wrap; gap:8px; margin-top:auto; padding-top:16px;
+  }
+  .gallery-more-icon{
+    width:34px; height:34px; border-radius:50%; flex-shrink:0; border:none; cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    background:rgba(255,255,255,.14); color:#fff; transition:background .2s ease;
+  }
+  .gallery-more-icon:hover{background:rgba(255,255,255,.26);}
+  .gallery-more-icon svg{width:16px; height:16px;}
+
+  /* ---------- Route section ---------- */
+  .route-grid{display:grid; grid-template-columns:1fr 1fr; gap:20px;}
+  @media (max-width:620px){ .route-grid{grid-template-columns:1fr;} }
+  .route-card{
+    border-radius:var(--radius-card); overflow:hidden; border:1px solid var(--line);
+    background:var(--surface-2); display:block;
+  }
+  .route-card img{width:100%; height:100%; object-fit:cover; display:block;}
+  .route-card-map{aspect-ratio:1/1;}
+  .route-card-photo{aspect-ratio:4/5;}
+  .route-card-photo img{object-position:center 72%;}
+  .route-cta{display:flex; justify-content:center; margin-top:28px;}
+
+  /* ---------- Event banner ---------- */
+  .event-banner{position:relative; height:clamp(260px,42vw,460px); overflow:hidden; border-radius:0;}
+  .event-banner img{width:100%; height:100%; object-fit:cover; object-position:center 22%; display:block;}
+  .event-banner::after{
+    content:""; position:absolute; inset:0;
+    background:linear-gradient(0deg, rgba(0,0,0,.78) 0%, rgba(0,0,0,.08) 60%);
+  }
+  .event-caption{position:absolute; left:0; right:0; bottom:0; padding:24px 20px; color:#FFFFFF;}
+  .event-caption .eyebrow{color:rgba(255,255,255,.65); margin-bottom:6px;}
+  .event-caption strong{font-family:var(--font-display); font-weight:400; font-size:clamp(20px,3vw,28px); display:block;}
+
+  /* ---------- Rules ---------- */
+  .rules-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:20px;}
+  @media (max-width:880px){ .rules-grid{grid-template-columns:1fr;} }
+  .rule-card{
+    background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-card);
+    overflow:hidden; display:flex; flex-direction:column; transition:border-color .25s ease;
+  }
+  .rule-card:hover{border-color:var(--fg-muted);}
+  .rule-photo{aspect-ratio:4/3; background:var(--surface-2);}
+  .rule-photo img{width:100%; height:100%; object-fit:cover; display:block;}
+  .rule-body{padding:20px; display:flex; flex-direction:column; gap:14px; flex:1;}
+  .rule-icon{
+    width:56px; height:56px; border-radius:50%; flex-shrink:0;
+    background:var(--surface); border:1px solid var(--line);
+    display:flex; align-items:center; justify-content:center; color:var(--fg);
+    margin-top:-42px; box-shadow:0 6px 16px rgba(15,26,20,.12);
+  }
+  .rule-icon svg{width:28px; height:28px;}
+  .rule-card h3{font-family:var(--font-body); font-weight:400; font-size:19px;}
+  .rule-card p{font-size:14.5px; color:var(--fg-muted); line-height:1.6;}
+  .rule-note{
+    margin-top:auto; padding-top:12px; border-top:1px solid var(--line);
+    font-family:var(--font-mono); font-size:12px; letter-spacing:.03em; text-transform:uppercase; color:var(--fg-muted);
+  }
+
+  /* ---------- About ---------- */
+  .about-grid{display:grid; grid-template-columns:1.2fr .8fr; gap:48px; align-items:start;}
+  @media (max-width:820px){ .about-grid{grid-template-columns:1fr;} }
+  .about-text p{font-size:16px; line-height:1.75; color:var(--fg-muted);}
+  .about-text p + p{margin-top:16px;}
+  .about-text strong{color:var(--fg);}
+  .about-photo{
+    border-radius:var(--radius-card); overflow:hidden; border:1px solid var(--line);
+    aspect-ratio:4/5; background:var(--surface-2);
+  }
+  .about-photo img{width:100%; height:100%; object-fit:cover; display:block;}
+  .explainer{
+    background:var(--surface-2); border-radius:var(--radius-card); padding:20px;
+    border:1px solid var(--line); margin-top:32px;
+  }
+  .explainer h3{font-size:16px; font-family:var(--font-body); font-weight:400; margin-bottom:10px;}
+  .explainer ul{margin:0; padding-left:18px; font-size:14px; color:var(--fg-muted); line-height:1.7;}
+  .explainer li + li{margin-top:6px;}
+
+  /* ---------- Services ---------- */
+  .card-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:20px;}
+  @media (max-width:880px){ .card-grid{grid-template-columns:1fr;} }
+  .card{
+    background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-card);
+    padding:20px; display:flex; flex-direction:column; gap:16px;
+    transition:border-color .25s ease;
+  }
+  .card:hover{border-color:var(--fg-muted);}
+  .card:hover .card-photo{animation:icon-pop .5s ease;}
+  @keyframes icon-pop{ 0%{transform:scale(1);} 40%{transform:scale(1.14) rotate(-4deg);} 100%{transform:scale(1);} }
+  @media (prefers-reduced-motion: reduce){
+    .card{transition:none;}
+    .card:hover .card-photo{animation:none;}
+  }
+  .card-photo{
+    width:72px; height:72px; border-radius:50%; overflow:hidden;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .card-photo img{width:100%; height:100%; object-fit:cover; display:block;}
+  .card h3{font-family:var(--font-body); font-weight:400; font-size:19px;}
+  .card p{font-size:14.5px; color:var(--fg-muted); line-height:1.6;}
+  .price-list-label{font-size:12px; letter-spacing:.04em; text-transform:uppercase; color:var(--fg-muted); margin-top:-4px;}
+  .price-list{margin:0;}
+  .price-row{display:flex; justify-content:space-between; gap:12px; padding-block:8px; border-top:1px solid var(--line); font-size:13.5px;}
+  .price-row:first-of-type{border-top:none;}
+  .price-row dt{color:var(--fg-muted);}
+  .price-row dd{margin:0; font-family:var(--font-mono); color:var(--fg);}
+  .price-note{margin:8px 0 0; font-size:12.5px; color:var(--fg-muted);}
+
+  /* ---------- Numbers strip ---------- */
+  .numbers{background:var(--surface-2); border-block:1px solid var(--line);}
+  .numbers-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:24px; padding-block:36px;}
+  @media (max-width:820px){ .numbers-grid{grid-template-columns:repeat(2,1fr);} }
+  .numbers .stat b{font-size:24px;}
+
+  /* ---------- Booking band (contrast band, inverted vs. page) ---------- */
+  .booking{background:var(--fg); color:var(--bg);}
+  .booking-inner{display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:24px; padding-block:44px;}
+  .booking h2{font-size:clamp(24px,3.4vw,34px); color:var(--bg); max-width:16ch;}
+  .booking-actions{display:flex; flex-wrap:wrap; gap:14px; align-items:center;}
+  .booking-copy{display:flex; align-items:center; gap:20px;}
+  .booking-photo{
+    width:76px; height:76px; border-radius:50%; overflow:hidden; flex-shrink:0;
+    border:1px solid color-mix(in srgb, var(--bg) 30%, transparent);
+  }
+  .booking-photo img{width:100%; height:100%; object-fit:cover; object-position:center 42%; display:block;}
+  @media (max-width:480px){ .booking-photo{display:none;} }
+  .booking-price{margin-top:8px; font-size:14.5px; color:color-mix(in srgb, var(--bg) 75%, transparent);}
+  .phone-copy{
+    display:inline-flex; align-items:center; gap:10px; font-family:var(--font-mono); font-size:15px;
+    background:color-mix(in srgb, var(--bg) 12%, transparent); border-radius:var(--radius-pill); padding:10px 18px; border:none; cursor:pointer;
+    color:var(--bg);
+  }
+  .phone-copy:hover{background:color-mix(in srgb, var(--bg) 20%, transparent);}
+
+  /* ---------- Location ---------- */
+  .loc-grid{display:grid; grid-template-columns:1fr 1fr; gap:40px;}
+  @media (max-width:820px){ .loc-grid{grid-template-columns:1fr;} }
+  .loc-card{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-card); padding:28px; transition:border-color .25s ease;}
+  .loc-card:hover{border-color:var(--fg-muted);}
+  .loc-card h3{font-family:var(--font-body); font-weight:400; font-size:17px; margin-bottom:14px;}
+  .loc-row{display:flex; gap:14px; padding-block:10px; border-top:1px solid var(--line); font-size:14.5px;}
+  .loc-row:first-of-type{border-top:none;}
+  .loc-row dt{color:var(--fg-muted); min-width:110px; flex-shrink:0;}
+  .loc-row dd{margin:0; color:var(--fg);}
+  .loc-row a{color:var(--fg); text-decoration:underline; text-decoration-color:var(--line); text-underline-offset:3px;}
+
+  /* ---------- Footer (contrast band, inverted vs. page) ---------- */
+  .footer{background:var(--fg); color:var(--bg); padding-block:56px calc(88px + env(safe-area-inset-bottom,0px));}
+  .footer-grid{display:grid; grid-template-columns:1.3fr 1fr 1fr; gap:32px;}
+  @media (max-width:880px){ .footer-grid{grid-template-columns:1fr 1fr; gap:32px;} }
+  @media (max-width:520px){ .footer-grid{grid-template-columns:1fr;} }
+  .footer h4{font-family:var(--font-mono); font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:color-mix(in srgb, var(--bg) 55%, transparent); margin-bottom:14px; font-weight:400;}
+  .footer ul{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:10px; font-size:14.5px;}
+  .footer ul a{text-decoration:none; color:var(--bg); opacity:.9;}
+  .footer ul a:hover{opacity:1; text-decoration:underline;}
+  .social-icons{display:flex; gap:10px; margin-top:18px;}
+  .social-icon{
+    width:38px; height:38px; border-radius:50%; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+    background:color-mix(in srgb, var(--bg) 12%, transparent); color:var(--bg);
+    transition:background .2s ease;
+  }
+  .social-icon:hover{background:color-mix(in srgb, var(--bg) 22%, transparent);}
+  .social-icon svg{width:18px; height:18px;}
+  .footer-bottom{margin-top:48px; padding-top:24px; border-top:1px solid color-mix(in srgb, var(--bg) 16%, transparent); display:flex; flex-wrap:wrap; justify-content:space-between; gap:12px; font-size:13px; color:color-mix(in srgb, var(--bg) 60%, transparent);}
+
+  /* ---------- Demo badge (presentation copy for the client) ---------- */
+  .demo-badge{
+    position:fixed; left:16px; bottom:calc(16px + env(safe-area-inset-bottom,0px)); z-index:40;
+    display:flex; align-items:center; gap:10px; padding:9px 14px 9px 12px;
+    background:#1E2B23; color:#F1EEE1; border:1px solid rgba(241,238,225,.18); border-radius:var(--radius-pill);
+    box-shadow:0 10px 28px rgba(0,0,0,.28); pointer-events:none; user-select:none;
+    font-family:var(--font-mono); font-size:11px; letter-spacing:.12em; text-transform:uppercase; line-height:1.2;
+  }
+  .demo-badge-dot{width:7px; height:7px; border-radius:50%; background:var(--accent); flex-shrink:0;}
+  .demo-badge small{display:block; font-size:10px; letter-spacing:.06em; text-transform:none; opacity:.65; margin-top:2px;}
+  @media (max-width:520px){ .demo-badge small{display:none;} }
+</style>
+
+</head>
+<body>
+<div class="demo-badge" role="note" aria-label="Демо-версия сайта, не для публикации">
+  <span class="demo-badge-dot" aria-hidden="true"></span>
+  <span>Демо-версия<small>Не для публикации · все права у автора</small></span>
+</div>
+
+<nav class="nav">
+  <div class="wrap nav-row">
+    <div class="logo">PALA CLUB <small>Ангарск</small></div>
+    <ul class="nav-links">
+      <li><a href="#services">Клуб</a></li>
+      <li><a href="#about">О клубе</a></li>
+      <li><a href="#location">Контакты</a></li>
+    </ul>
+    <div class="nav-book-wrap">
+      <button class="btn btn-primary btn-sm nav-book-btn" type="button" aria-expanded="false" aria-controls="nav-phone-popover">Забронировать</button>
+      <div class="nav-phone-popover" id="nav-phone-popover" hidden>
+        <div class="nav-phone-number">+7 924 639-02-46</div>
+        <a class="btn btn-primary btn-sm" href="tel:+79246390246" target="_blank" rel="noopener">Позвонить</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<header class="intro" id="top" aria-label="Пала Клаб — падел в Ангарске">
+  <div class="intro-sticky">
+    <div class="intro-poster" aria-hidden="true"></div>
+    <canvas class="intro-canvas" role="img" aria-label="Ракетка для падела поворачивается, отбивает мяч, и мяч летит прямо в камеру"></canvas>
+    <div class="intro-shade" aria-hidden="true"></div>
+
+    <div class="intro-start">
+      <h1 class="intro-title" aria-label="PALA CLUB — падел в Ангарске">
+        <span aria-hidden="true"><span class="hero-letter" style="--ld:60ms">P</span><span class="hero-letter" style="--ld:100ms">A</span><span class="hero-letter" style="--ld:140ms">L</span><span class="hero-letter" style="--ld:180ms">A</span></span>
+        <span aria-hidden="true"><span class="hero-letter" style="--ld:260ms">C</span><span class="hero-letter" style="--ld:300ms">L</span><span class="hero-letter" style="--ld:340ms">U</span><span class="hero-letter" style="--ld:380ms">B</span><span class="intro-tag hero-fade" style="--fd:520ms">Падел в Ангарске</span></span>
+      </h1>
+    </div>
+    <button class="intro-skip" type="button">Пропустить</button>
+
+    <div class="intro-flash" aria-hidden="true"></div>
+    <div class="intro-end">
+      <div class="intro-end-inner">
+        <div class="eyebrow">PALA CLUB</div>
+        <h2>Современный падел-клуб в&nbsp;Ангарске</h2>
+        <p>Три корта со стеклянными стенами в ТЦ «Шанхаймолл». Игра, тренировки и турниры — с 08:00 до 22:00 каждый день.</p>
+        <div class="intro-end-cta">
+          <a class="btn btn-ink" href="https://lundapadel.app/clubs/angarsk/pala-club" target="_blank" rel="noopener">Забронировать корт →</a>
+          <a class="btn btn-ghost-ink" href="https://wa.me/79246390246" target="_blank" rel="noopener">Написать в WhatsApp</a>
+        </div>
+        <button class="intro-replay" type="button">↻ Посмотреть ещё раз</button>
+      </div>
+      <div class="intro-end-cue" aria-hidden="true">Листайте<span></span></div>
+    </div>
+    <div class="intro-progress" aria-hidden="true"><span></span></div>
+  </div>
+</header>
+
+<div class="stat-strip" id="hero-next">
+  <div class="wrap stat-row">
+    <div class="stat reveal" style="--d:0ms"><b class="mono" data-count="3" data-decimals="0">0</b><span>корта со стеклянными стенами</span></div>
+    <div class="stat reveal" style="--d:80ms"><b class="mono" data-count="2026" data-decimals="0">0</b><span>год открытия клуба</span></div>
+    <div class="stat reveal" style="--d:160ms"><b class="mono" data-count="5" data-decimals="1">0.0</b><span>рейтинг клуба</span></div>
+    <div class="stat reveal" style="--d:240ms"><b class="mono">08:00–22:00</b><span>ежедневно</span></div>
+  </div>
+</div>
+
+<section id="gallery">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <h2>Атмосфера клуба</h2>
+      <p>Открытие, тренировки и турнирные медали — живые кадры «Пала Клаб», а не стоковые фото.</p>
+    </div>
+    <div class="gallery-grid">
+      <div class="gallery-item reveal" style="--d:0ms">
+        <video class="gallery-video" autoplay muted loop playsinline poster="photos/gallery-video-poster.jpg" aria-label="Игра на корте клуба">
+          <source src="gallery-video.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="gallery-item reveal" style="--d:60ms">
+        <img src="photos/pink-shoes-overhead.jpg" alt="Игрок на корте, вид сверху" loading="lazy">
+      </div>
+      <div class="gallery-item reveal" style="--d:120ms">
+        <img src="photos/arm-ball-closeup.jpg" alt="Игрок клуба с ракеткой" loading="lazy">
+      </div>
+      <div class="gallery-item gallery-more gallery-more-photo reveal" style="--d:180ms">
+        <img class="gallery-more-bg" src="photos/booking-balls.png" alt="" loading="lazy">
+        <div class="gallery-more-scrim"></div>
+        <span class="eyebrow">Бронь</span>
+        <strong>Хотите на корт?</strong>
+        <a class="gallery-more-link" href="https://lundapadel.app/clubs/angarsk/pala-club" target="_blank" rel="noopener">Забронировать за 30 секунд →</a>
+        <div class="gallery-more-actions">
+          <a class="gallery-more-icon" href="https://max.ru/channel_palaclub" target="_blank" rel="noopener" aria-label="Забронировать в MAX">
+            <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2C6.5 2 2 5.8 2 10.5c0 2.6 1.4 4.9 3.6 6.5-.1.9-.5 2.3-1.4 3.6 1.7-.2 3.3-.9 4.4-1.7.9.2 1.9.3 2.9.3 5.5 0 10-3.8 10-8.5S17.5 2 12 2z"/></svg>
+          </a>
+          <a class="gallery-more-icon" href="https://wa.me/79246390246" target="_blank" rel="noopener" aria-label="Забронировать в WhatsApp">
+            <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2a10 10 0 0 0-8.6 15l-1.3 4.8 4.9-1.3A10 10 0 1 0 12 2zm5.8 14.2c-.3.7-1.4 1.3-2 1.4-.5.1-1.2.2-3.8-.8-3.2-1.3-5.3-4.5-5.5-4.7-.2-.2-1.3-1.7-1.3-3.3 0-1.6.8-2.3 1.1-2.7.3-.3.7-.4.9-.4h.6c.2 0 .5 0 .7.6.3.7.9 2.3 1 2.5.1.2.1.4 0 .6-.1.2-.2.4-.4.6-.2.2-.4.5-.6.6-.2.2-.4.4-.2.8.2.4 1 1.6 2.1 2.6 1.4 1.3 2.6 1.7 3 1.9.4.2.6.1.8-.1.2-.2.9-1 1.1-1.4.2-.4.5-.3.8-.2.3.1 2 1 2.4 1.1.4.2.6.3.7.4.1.2.1.9-.2 1.6z"/></svg>
+          </a>
+          <a class="gallery-more-icon" href="https://t.me/+xOVkhgjY41owMzQy" target="_blank" rel="noopener" aria-label="Забронировать в Telegram">
+            <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M21 3.5 2.8 10.9c-.8.3-.8 1.5.1 1.8l4.6 1.5 1.7 5.6c.2.6 1 .7 1.4.2l2.3-2.7 4.6 3.4c.6.5 1.6.1 1.7-.7l3-17c.2-.9-.7-1.6-1.4-1.3Z"/></svg>
+          </a>
+          <a class="gallery-more-icon" href="tel:+79246390246" aria-label="Позвонить +7 924 639-02-46">
+            <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M6.6 10.8c1.4 2.8 3.8 5.2 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.4c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.4 0 .8-.2 1L6.6 10.8Z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="services">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <h2>Чем живёт клуб</h2>
+      <p>От первой тренировки до турнирного стола — три направления, вокруг которых строится жизнь клуба.</p>
+    </div>
+    <div class="card-grid">
+      <div class="card reveal" style="--d:0ms">
+        <div class="card-photo"><img src="photos/equipment-shelf.jpg" alt="Инвентарь клуба: мячи и ракетки" loading="lazy"></div>
+        <h3>Корты</h3>
+        <p>3 профессиональных падел-корта со стеклянными стенами и покрытием для точного, предсказуемого отскока мяча.</p>
+        <div class="price-list-label">Аренда корта</div>
+        <dl class="price-list">
+          <div class="price-row"><dt>1 час</dt><dd>2 500 ₽</dd></div>
+          <div class="price-row"><dt>Счастливые часы · вт–чт, 10:00–13:00</dt><dd>1 500 ₽</dd></div>
+        </dl>
+        <p class="price-note">Ракетки и мячи включены в стоимость</p>
+      </div>
+      <div class="card reveal" style="--d:100ms">
+        <div class="card-photo"><img src="photos/player-black.jpg" alt="Тренировка в клубе" loading="lazy"></div>
+        <h3>Тренировки</h3>
+        <p>Групповые и индивидуальные занятия для детей и взрослых — от первого касания мяча до игрового уровня.</p>
+        <div class="price-list-label">Тренировка с тренером</div>
+        <dl class="price-list">
+          <div class="price-row"><dt>1 человек</dt><dd>3 500 ₽</dd></div>
+          <div class="price-row"><dt>2 человека</dt><dd>4 500 ₽</dd></div>
+          <div class="price-row"><dt>3 человека</dt><dd>5 500 ₽</dd></div>
+          <div class="price-row"><dt>4 человека</dt><dd>6 000 ₽</dd></div>
+        </dl>
+      </div>
+      <div class="card reveal" style="--d:200ms">
+        <div class="card-photo"><img src="photos/medals-hanging.jpg" alt="Медали турниров клуба" loading="lazy"></div>
+        <h3>Турниры и события</h3>
+        <p>Любительские турниры, клубные вечера и матчи с приглашёнными командами из других городов.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="rules">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <h2>Правила игры в падел</h2>
+      <p>Если вы в клубе впервые — вот три вещи, которые стоит знать перед первой игрой.</p>
+    </div>
+    <div class="rules-grid">
+      <div class="rule-card reveal" style="--d:0ms">
+        <div class="rule-photo"><img src="photos/rule-serve.jpg" alt="Подача в падел: удар снизу с отскоком мяча по диагонали" loading="lazy"></div>
+        <div class="rule-body">
+          <div class="rule-icon" aria-hidden="true">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="4" y="8" width="40" height="32" rx="2"/>
+              <line x1="24" y1="8" x2="24" y2="40"/>
+              <line x1="4" y1="24" x2="44" y2="24"/>
+              <path d="M10 30 L 32 16" stroke-dasharray="4 3"/>
+              <path d="M32 16 L 26 17 M32 16 L 31 22"/>
+            </svg>
+          </div>
+          <h3>Подача</h3>
+          <p>Удар выполняется снизу, с отскоком мяча от пола, и подаётся по диагонали в квадрат соперника.</p>
+          <div class="rule-note">Разрешено одно касание стены после отскока от пола</div>
+        </div>
+      </div>
+      <div class="rule-card reveal" style="--d:100ms">
+        <div class="rule-photo"><img src="photos/rule-wall.jpg" alt="Мяч отскакивает от стеклянной стены корта для падел" loading="lazy"></div>
+        <div class="rule-body">
+          <div class="rule-icon" aria-hidden="true">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="6" y1="40" x2="42" y2="40"/>
+              <line x1="42" y1="8" x2="42" y2="40"/>
+              <path d="M10 14 L 24 40 L 42 21" stroke-dasharray="4 3"/>
+              <circle cx="10" cy="14" r="2" fill="currentColor" stroke="none"/>
+            </svg>
+          </div>
+          <h3>Стены — часть игры</h3>
+          <p>Мяч, отскочивший от пола, можно отыграть от стены — как в сквоше, только стены стеклянные.</p>
+          <div class="rule-note">Важно: сначала пол, потом стена</div>
+        </div>
+      </div>
+      <div class="rule-card reveal" style="--d:200ms">
+        <div class="rule-photo"><img src="photos/rule-score.jpg" alt="Ракетка и мяч для падел на корте" loading="lazy"></div>
+        <div class="rule-body">
+          <div class="rule-icon" aria-hidden="true">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="24" cy="24" r="16"/>
+              <path d="M12 12 C 20 18, 20 30, 12 36"/>
+              <path d="M36 12 C 28 18, 28 30, 36 36"/>
+            </svg>
+          </div>
+          <h3>Счёт — как в теннисе</h3>
+          <p>0, 15, 30, 40, гейм — счёт считают так же, как в большом теннисе.</p>
+          <div class="rule-note">Ошибка: два отскока от пола, или мяч сразу в стену соперника без отскока</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="wrap about-grid">
+    <div class="about-text reveal">
+      <div class="section-head" style="margin-bottom:24px;">
+        <h2>О клубе</h2>
+      </div>
+      <p><strong>Пала Клаб</strong> открылся 14 сентября 2026 года в ТЦ «Шанхаймолл» — одно из первых мест в Ангарске, полностью отданное падел-теннису. Три корта со стеклянными задними стенами, ровное покрытие для предсказуемого отскока и пространство, где можно просто прийти поиграть или начать учиться с нуля.</p>
+      <p>Клубом руководит <strong>Дана Апажева</strong>. Здесь проводят тренировки для детей и взрослых, любительские турниры и клубные встречи — с прицелом на то, чтобы вырастить в городе полноценное падел-сообщество.</p>
+      <div class="explainer" style="margin-top:32px;">
+        <h3>Что такое падел?</h3>
+        <ul>
+          <li>Смесь тенниса и сквоша — играют парами на закрытом корте со стеклянными и сетчатыми стенами</li>
+          <li>Мяч можно отбивать после отскока от стены — это меняет всю тактику розыгрыша</li>
+          <li>Подача только снизу, счёт ведётся как в теннисе (15–30–40–гейм)</li>
+          <li>Корт компактнее теннисного, поэтому в падел легко втянуться без спортивного опыта</li>
+        </ul>
+      </div>
+      <div class="explainer" style="margin-top:20px;">
+        <h3>Преимущества падела</h3>
+        <ul>
+          <li>Координация и реакция</li>
+          <li>Развивает тактическое мышление и скорость принятия решений</li>
+          <li>Социализация — командный дух и новые друзья</li>
+          <li>Отличная кардионагрузка без перегрузки суставов</li>
+        </ul>
+      </div>
+    </div>
+    <div class="about-photo reveal" style="--d:150ms">
+      <img src="photos/medal-polo.jpg" alt="Медаль «Пала Клаб» на клубной форме" loading="lazy">
+    </div>
+  </div>
+</section>
+
+<div class="numbers">
+  <div class="wrap numbers-grid">
+    <div class="stat reveal" style="--d:0ms"><b class="mono">10×20 м</b><span>стандартный размер корта</span></div>
+    <div class="stat reveal" style="--d:80ms"><b class="mono">2×2</b><span>игроков в парном матче</span></div>
+    <div class="stat reveal" style="--d:160ms"><b class="mono">3</b><span>сета до победы</span></div>
+    <div class="stat reveal" style="--d:240ms"><b class="mono">↩ стены</b><span>в игре — как в сквоше</span></div>
+  </div>
+</div>
+
+<div class="event-banner reveal">
+  <img src="photos/serving-branded-wall.jpg" alt="Фирменная стена клуба с кубками и логотипом Pala Club" loading="lazy">
+  <div class="event-caption">
+    <div class="eyebrow">Своя атмосфера</div>
+    <strong>Клуб с характером — от формы до стен корта</strong>
+  </div>
+</div>
+
+<div class="booking">
+  <div class="wrap booking-inner">
+    <div class="booking-copy">
+      <div class="booking-photo"><img src="photos/booking-racket-balls.png" alt="Ракетка для падела в сумке с мячами"></div>
+      <div>
+        <h2>Мы в соцсетях</h2>
+      </div>
+    </div>
+    <div class="booking-actions">
+      <a class="btn btn-primary" href="https://lundapadel.app/clubs/angarsk/pala-club" target="_blank" rel="noopener">Забронировать на Lunda</a>
+      <a class="btn btn-ghost-inverse" href="https://t.me/+xOVkhgjY41owMzQy" target="_blank" rel="noopener">Telegram</a>
+      <a class="btn btn-ghost-inverse" href="https://wa.me/79246390246" target="_blank" rel="noopener">WhatsApp</a>
+      <a class="btn btn-ghost-inverse" href="https://max.ru/channel_palaclub" target="_blank" rel="noopener">MAX</a>
+      <button class="phone-copy" type="button" data-phone="+7 924 639-02-46" aria-label="Скопировать номер телефона">
+        <span data-role="phone-text">+7 924 639-02-46</span>
+        <span data-role="phone-icon">⧉</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<section id="location">
+  <div class="wrap loc-grid">
+    <div class="loc-card reveal" style="--d:0ms">
+      <h3>Адрес и время работы</h3>
+      <dl style="margin:0;">
+        <div class="loc-row"><dt>Адрес</dt><dd>ТЦ «Шанхаймолл», ул. Ленина, 45, 124 квартал, Ангарск</dd></div>
+        <div class="loc-row"><dt>Часы работы</dt><dd>Ежедневно, с 08:00 до 22:00</dd></div>
+        <div class="loc-row"><dt>Стоимость</dt><dd>2 500 ₽ за 1 час (ракетки и мячи включены)</dd></div>
+        <div class="loc-row"><dt>Счастливые часы</dt><dd>Вт–чт, 10:00–13:00 — 1 500 ₽ за 1 час</dd></div>
+      </dl>
+    </div>
+    <div class="loc-card reveal" style="--d:120ms">
+      <h3>Контакты и бронирование</h3>
+      <dl style="margin:0;">
+        <div class="loc-row"><dt>Бронирование</dt><dd><a href="https://lundapadel.app/clubs/angarsk/pala-club" target="_blank" rel="noopener">lundapadel.app →</a></dd></div>
+        <div class="loc-row"><dt>Lunda Padel</dt><dd><a href="https://apps.apple.com/ru/app/lunda-padel/id6479701297" target="_blank" rel="noopener">Приложение в App Store</a></dd></div>
+        <div class="loc-row"><dt>Телефон</dt><dd>+7 924 639-02-46</dd></div>
+        <div class="loc-row"><dt>Telegram</dt><dd><a href="https://t.me/+xOVkhgjY41owMzQy" target="_blank" rel="noopener">Написать в Telegram</a></dd></div>
+        <div class="loc-row"><dt>WhatsApp</dt><dd><a href="https://wa.me/79246390246" target="_blank" rel="noopener">Написать сообщение</a></dd></div>
+        <div class="loc-row"><dt>MAX</dt><dd><a href="https://max.ru/channel_palaclub" target="_blank" rel="noopener">Канал в MAX</a></dd></div>
+        <div class="loc-row"><dt>Рейтинг</dt><dd>5.0</dd></div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section id="route">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <h2>Маршрут</h2>
+      <p>Заезжайте со стороны ул. Ленина — вход в клуб со стороны ТЦ «Шанхаймолл», отмеченный пунктиром на схеме.</p>
+    </div>
+    <div class="route-grid">
+      <div class="route-card route-card-photo reveal" style="--d:0ms">
+        <img src="photos/route-photo.jpg" alt="Клуб находится в ТЦ «Шанхаймолл», ул. Ленина, 45">
+      </div>
+      <div class="route-card route-card-map reveal" style="--d:100ms">
+        <img src="photos/route-map.jpg" alt="Схема проезда: вход в клуб со стороны ТЦ «Шанхаймолл»">
+      </div>
+    </div>
+    <div class="route-cta reveal" style="--d:180ms">
+      <a class="btn btn-primary" href="https://yandex.ru/maps/?text=Ангарск%2C%20ул.%20Ленина%2C%2045" target="_blank" rel="noopener">Построить маршрут</a>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="wrap footer-grid">
+    <div>
+      <div class="logo" style="margin-bottom:12px;">PALA CLUB</div>
+      <p style="max-width:32ch; color:color-mix(in srgb, var(--bg) 70%, transparent); font-size:14.5px; line-height:1.6;">Падел-клуб в Ангарске. Три корта, тренировки и турниры в ТЦ «Шанхаймолл».</p>
+      <div class="social-icons">
+        <a class="social-icon" href="https://t.me/+xOVkhgjY41owMzQy" target="_blank" rel="noopener" aria-label="Telegram">
+          <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M21 3.5 2.8 10.9c-.8.3-.8 1.5.1 1.8l4.6 1.5 1.7 5.6c.2.6 1 .7 1.4.2l2.3-2.7 4.6 3.4c.6.5 1.6.1 1.7-.7l3-17c.2-.9-.7-1.6-1.4-1.3Z"/></svg>
+        </a>
+        <a class="social-icon" href="https://wa.me/79246390246" target="_blank" rel="noopener" aria-label="WhatsApp">
+          <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2a10 10 0 0 0-8.6 15l-1.3 4.8 4.9-1.3A10 10 0 1 0 12 2zm5.8 14.2c-.3.7-1.4 1.3-2 1.4-.5.1-1.2.2-3.8-.8-3.2-1.3-5.3-4.5-5.5-4.7-.2-.2-1.3-1.7-1.3-3.3 0-1.6.8-2.3 1.1-2.7.3-.3.7-.4.9-.4h.6c.2 0 .5 0 .7.6.3.7.9 2.3 1 2.5.1.2.1.4 0 .6-.1.2-.2.4-.4.6-.2.2-.4.5-.6.6-.2.2-.4.4-.2.8.2.4 1 1.6 2.1 2.6 1.4 1.3 2.6 1.7 3 1.9.4.2.6.1.8-.1.2-.2.9-1 1.1-1.4.2-.4.5-.3.8-.2.3.1 2 1 2.4 1.1.4.2.6.3.7.4.1.2.1.9-.2 1.6z"/></svg>
+        </a>
+        <a class="social-icon" href="https://max.ru/channel_palaclub" target="_blank" rel="noopener" aria-label="MAX">
+          <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2C6.5 2 2 5.8 2 10.5c0 2.6 1.4 4.9 3.6 6.5-.1.9-.5 2.3-1.4 3.6 1.7-.2 3.3-.9 4.4-1.7.9.2 1.9.3 2.9.3 5.5 0 10-3.8 10-8.5S17.5 2 12 2z"/></svg>
+        </a>
+        <a class="social-icon" href="https://www.instagram.com/pala_club/" target="_blank" rel="noopener" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.2" cy="6.8" r="1" fill="currentColor" stroke="none"/></svg>
+        </a>
+      </div>
+    </div>
+    <div>
+      <h4>Навигация</h4>
+      <ul>
+        <li><a href="#services">Клуб</a></li>
+        <li><a href="#about">О клубе</a></li>
+        <li><a href="#location">Контакты</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Связаться</h4>
+      <ul>
+        <li><a href="https://t.me/+xOVkhgjY41owMzQy" target="_blank" rel="noopener">Telegram</a></li>
+        <li><a href="https://wa.me/79246390246" target="_blank" rel="noopener">WhatsApp</a></li>
+        <li><a href="https://max.ru/channel_palaclub" target="_blank" rel="noopener">MAX</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap footer-bottom">
+    <span>© 2026 Пала Клаб, Ангарск</span>
+    <span>Демо-версия сайта. Дизайн и код принадлежат автору; копирование и публикация без его согласия запрещены.</span>
+  </div>
+</footer>
+
+<script>
+  // Show the phone number + call button when the nav "Забронировать" button is clicked
+  (function(){
+    var wrap = document.querySelector('.nav-book-wrap');
+    var btn = document.querySelector('.nav-book-btn');
+    var popover = document.getElementById('nav-phone-popover');
+    if(!wrap || !btn || !popover) return;
+    function closePopover(){
+      popover.hidden = true;
+      btn.setAttribute('aria-expanded', 'false');
+    }
+    function openPopover(){
+      popover.hidden = false;
+      btn.setAttribute('aria-expanded', 'true');
+    }
+    btn.addEventListener('click', function(e){
+      e.stopPropagation();
+      if(popover.hidden){ openPopover(); } else { closePopover(); }
+    });
+    document.addEventListener('click', function(e){
+      if(!popover.hidden && !wrap.contains(e.target)){ closePopover(); }
+    });
+    document.addEventListener('keydown', function(e){
+      if(e.key === 'Escape'){ closePopover(); }
+    });
+  })();
+
+  (function(){
+    var btn = document.querySelector('.phone-copy');
+    if(!btn) return;
+    btn.addEventListener('click', function(){
+      var phone = btn.getAttribute('data-phone');
+      var iconEl = btn.querySelector('[data-role="phone-icon"]');
+      function flash(text){
+        if(!iconEl) return;
+        iconEl.textContent = text;
+        setTimeout(function(){ iconEl.textContent = '⧉'; }, 1400);
+      }
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(phone).then(function(){
+          flash('✓');
+        }).catch(function(){
+          selectFallback();
+        });
+      } else {
+        selectFallback();
+      }
+      function selectFallback(){
+        var range = document.createRange();
+        var textEl = btn.querySelector('[data-role="phone-text"]');
+        if(textEl){
+          range.selectNodeContents(textEl);
+          var sel = window.getSelection();
+          sel.removeAllRanges();
+          sel.addRange(range);
+        }
+        flash('✓');
+      }
+    });
+  })();
+
+  // Scroll reveal + count-up, respecting prefers-reduced-motion
+  (function(){
+    var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var revealEls = Array.prototype.slice.call(document.querySelectorAll('.reveal'));
+    var countEls = Array.prototype.slice.call(document.querySelectorAll('[data-count]'));
+
+    function runCount(el){
+      if(el.dataset.counted) return;
+      el.dataset.counted = '1';
+      var target = parseFloat(el.getAttribute('data-count'));
+      var decimals = parseInt(el.getAttribute('data-decimals') || '0', 10);
+      if(isNaN(target)) return;
+      if(reduceMotion){ el.textContent = target.toFixed(decimals); return; }
+      var duration = 900;
+      var start = null;
+      function ease(t){ return 1 - Math.pow(1 - t, 3); }
+      function step(ts){
+        if(start === null) start = ts;
+        var p = Math.min((ts - start) / duration, 1);
+        var val = target * ease(p);
+        el.textContent = val.toFixed(decimals);
+        if(p < 1) requestAnimationFrame(step);
+        else el.textContent = target.toFixed(decimals);
+      }
+      requestAnimationFrame(step);
+    }
+
+    if(reduceMotion){
+      revealEls.forEach(function(el){ el.classList.add('is-visible'); });
+      countEls.forEach(runCount);
+      return;
+    }
+
+    if(!('IntersectionObserver' in window)){
+      revealEls.forEach(function(el){ el.classList.add('is-visible'); });
+      countEls.forEach(runCount);
+      return;
+    }
+
+    var revealObserver = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){
+          entry.target.classList.add('is-visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+    revealEls.forEach(function(el){ revealObserver.observe(el); });
+
+    var countObserver = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){
+          runCount(entry.target);
+          countObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.6 });
+    countEls.forEach(function(el){ countObserver.observe(el); });
+  })();
+
+  // Play background videos only when motion is welcome; otherwise show the static poster frame
+  (function(){
+    var videos = document.querySelectorAll('.gallery-video');
+    if(!videos.length) return;
+    var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    videos.forEach(function(video){
+      if(reduceMotion){ video.removeAttribute('autoplay'); video.pause(); return; }
+      var playPromise = video.play();
+      if(playPromise && playPromise.catch){ playPromise.catch(function(){}); }
+    });
+  })();
+
+  // Intro film: plays by itself once loaded (racket turns → ball → hit → ball into the lens → booking screen)
+  (function(){
+    var intro = document.querySelector('.intro');
+    if(!intro) return;
+    var nav = document.querySelector('.nav');
+    var sticky = intro.querySelector('.intro-sticky');
+    function setNavH(){ document.documentElement.style.setProperty('--nav-h', (nav ? nav.offsetHeight : 0) + 'px'); }
+    setNavH();
+    var canvas = intro.querySelector('.intro-canvas');
+    var ctx = canvas.getContext && canvas.getContext('2d');
+    var poster = intro.querySelector('.intro-poster');
+    var startEl = intro.querySelector('.intro-start');
+    var skipBtn = intro.querySelector('.intro-skip');
+    var replayBtn = intro.querySelector('.intro-replay');
+    var flashEl = intro.querySelector('.intro-flash');
+    var endEl = intro.querySelector('.intro-end');
+    var barEl = intro.querySelector('.intro-progress span');
+    var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(!ctx || reduceMotion) return;
+
+    var COUNT = 82, IW = 1696, IH = 848;
+    var BALL_X = 0.56, BALL_Y = 0.47;        // ball centre in the last frame, as a share of the frame
+    var TOP = '#2d2b30', BOTTOM = '#464449'; // sampled edge colours of the film, for letterboxing on tall screens
+    var frames = new Array(COUNT), loaded = new Array(COUNT);
+    var current = -1, geo = null;
+    var DURATION = 4500, HOLD = 1400;        // film length; pause on the title before it starts
+    var p = 0, playing = false, started = false, last = 0, loadedCount = 0, t0 = performance.now();
+
+    function src(i){ return 'intro/f' + (i < 10 ? '0' + i : i) + '.webp'; }
+    function load(i){
+      var img = new Image();
+      img.decoding = 'async';
+      img.onload = function(){ loaded[i] = true; loadedCount++; if(i === 0){ current = -1; render(); } maybeStart(); };
+      img.onerror = function(){ loadedCount++; maybeStart(); };
+      img.src = src(i);
+      frames[i] = img;
+    }
+    load(0);
+    for(var i = 1; i < COUNT; i++) load(i);
+
+    function clamp(v, a, b){ return v < a ? a : v > b ? b : v; }
+    function smooth(a, b, v){ var t = clamp((v - a) / (b - a), 0, 1); return t * t * (3 - 2 * t); }
+
+    function targetFrame(){ return Math.round(clamp(p / 0.8, 0, 1) * (COUNT - 1)); }
+
+    function size(){
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      var w = canvas.clientWidth, h = canvas.clientHeight;
+      canvas.width = Math.round(w * dpr); canvas.height = Math.round(h * dpr);
+      // cover on landscape screens; on tall phones keep ~half the frame width so the ball stays in view
+      var cover = Math.max(w / IW, h / IH), contain = Math.min(w / IW, h / IH);
+      var s = Math.min(cover, Math.max(w * 2 / IW, contain));
+      var dw = IW * s, dh = IH * s;
+      geo = { dpr: dpr, w: w, h: h, dw: dw, dh: dh, dx: (w - dw) / 2, dy: (h - dh) * (h > w ? 0.74 : 0.5) }; // on phones sit the film lower, clear of the title
+      canvas.style.transformOrigin = (geo.dx + BALL_X * dw) + 'px ' + (geo.dy + BALL_Y * dh) + 'px';
+      current = -1;
+    }
+
+    function nearestLoaded(i){
+      for(var d = 0; d < COUNT; d++){
+        if(i - d >= 0 && loaded[i - d]) return i - d;
+        if(i + d < COUNT && loaded[i + d]) return i + d;
+      }
+      return -1;
+    }
+
+    function drawFrame(i){
+      var k = nearestLoaded(i);
+      if(k < 0 || k === current) return;
+      current = k;
+      var g = geo, c = ctx;
+      c.setTransform(g.dpr, 0, 0, g.dpr, 0, 0);
+      c.fillStyle = TOP; c.fillRect(0, 0, g.w, g.h / 2);
+      c.fillStyle = BOTTOM; c.fillRect(0, g.h / 2, g.w, g.h / 2);
+      c.drawImage(frames[k], g.dx, g.dy, g.dw, g.dh);
+      if(g.dy > 1){
+        var f = g.dh * 0.16, grad;
+        grad = c.createLinearGradient(0, g.dy, 0, g.dy + f);
+        grad.addColorStop(0, TOP); grad.addColorStop(1, 'rgba(45,43,48,0)');
+        c.fillStyle = grad; c.fillRect(0, g.dy - 1, g.w, f + 1);
+        grad = c.createLinearGradient(0, g.dy + g.dh - f, 0, g.dy + g.dh);
+        grad.addColorStop(0, 'rgba(70,68,73,0)'); grad.addColorStop(1, BOTTOM);
+        c.fillStyle = grad; c.fillRect(0, g.dy + g.dh - f, g.w, f + 1);
+      }
+      if(poster) { poster.remove(); poster = null; }
+    }
+
+    function render(){
+      if(!geo) size();
+      drawFrame(targetFrame());
+      var startOut = smooth(0, 0.12, p);
+      startEl.style.opacity = 1 - startOut;
+      startEl.style.transform = 'translateY(' + (-40 * startOut) + 'px)';
+      var zoom = smooth(0.76, 0.92, p);
+      canvas.style.transform = zoom > 0 ? 'scale(' + (1 + zoom * zoom * 4) + ')' : '';
+      flashEl.style.opacity = smooth(0.84, 0.93, p);
+      var endIn = smooth(0.9, 0.98, p);
+      endEl.style.opacity = endIn;
+      endEl.classList.toggle('is-live', endIn > 0.02);
+      endEl.style.pointerEvents = endIn > 0.6 ? 'auto' : 'none';
+      endEl.firstElementChild.style.transform = 'translateY(' + (28 * (1 - endIn)) + 'px)';
+      barEl.style.transform = 'scaleX(' + p + ')';
+    }
+    function tick(ts){
+      if(!playing) return;
+      if(!last) last = ts;
+      var dt = Math.min(ts - last, 50); last = ts;   // capped, so a hidden tab resumes smoothly
+      p = Math.min(1, p + dt / DURATION);
+      if(intro.getBoundingClientRect().bottom < 0) p = 1; // scrolled past it — just land on the end
+      render();
+      if(p < 1) requestAnimationFrame(tick); else finish();
+    }
+    function play(){
+      started = true; playing = true; last = 0;
+      intro.classList.add('is-playing');
+      skipBtn.hidden = false;
+      requestAnimationFrame(tick);
+    }
+    function finish(){
+      var hadFocus = document.activeElement === skipBtn;
+      playing = false;
+      intro.classList.remove('is-playing');
+      skipBtn.hidden = true;
+      if(hadFocus){ var a = endEl.querySelector('a'); if(a) a.focus({ preventScroll: true }); }
+    }
+    function maybeStart(){
+      if(started || loadedCount < COUNT) return;
+      started = true;
+      setTimeout(play, Math.max(0, HOLD - (performance.now() - t0)));
+    }
+    setTimeout(function(){ if(!started) play(); }, 8000); // slow connection: start with whatever has loaded
+
+    skipBtn.addEventListener('click', function(){ started = true; playing = false; p = 1; render(); finish(); });
+    replayBtn.addEventListener('click', function(){ p = 0; current = -1; render(); play(); });
+    window.addEventListener('resize', function(){ setNavH(); geo = null; render(); });
+    render();
+  })();
+
+  // Demo copy: keep images and the film from being saved with a right-click or drag
+  (function(){
+    function isMedia(t){ return t && (t.tagName === 'IMG' || t.tagName === 'VIDEO' || t.tagName === 'CANVAS' || (t.closest && t.closest('.intro-poster'))); }
+    document.addEventListener('contextmenu', function(e){ if(isMedia(e.target)) e.preventDefault(); });
+    document.addEventListener('dragstart', function(e){ if(isMedia(e.target)) e.preventDefault(); });
+  })();
+</script>
+
+</body>
+</html>
